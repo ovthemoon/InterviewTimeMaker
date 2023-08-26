@@ -57,7 +57,7 @@ def main():
     interviewer_slots={}
     for index, row in df1.iterrows():
         name = row['이름']
-        times = row['면접가능시간'].split()
+        times = row['면접가능시간'].replace(',',' ').split()
 
         slots = []
         for i in range(0, len(times), 2):
@@ -154,6 +154,10 @@ def main():
         phone_number = phone_numbers.get(name, '번호 없음')
         result_data.append([name, phone_number, slot, interviewers_str])
         
+    for name in unassigned_names:
+        phone_number = phone_numbers.get(name, '번호 없음')
+        result_data.append([name, phone_number, "배정 안됨", ""])
+
     df_result = pd.DataFrame(result_data, columns=['이름', '전화번호', '면접 시간', '가능한 면접관'])
 
     file_path = '면접시간.xlsx'
